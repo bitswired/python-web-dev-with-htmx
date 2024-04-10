@@ -1,0 +1,59 @@
+{% from "icon-macros.html" import get_icon %}
+{% macro suggestion(title, sub_title) %}
+
+<button hx-post="/chat" name="message" value="{{ title}} {{ sub_title }}" hx-ext="json-enc"
+    class="block text-left border-[1px] border-foreground/30 p-2 rounded-md cursor-pointer hover:bg-foreground/[.03]">
+    <div class="text-sm font-medium line-clamp-1">{{ title }}</div>
+    <div class="text-sm text-foreground/50 line-clamp-1">{{ sub_title }}</div>
+</button>
+
+{% endmacro %}
+
+{% macro chat_message(kind, content, username="asdf") %}
+
+
+<div class="flex max-w-[700px] w-full items-start p-4 gap-4">
+
+    <div
+        class="border-[1px] border-black rounded-full w-max aspect-square p-1 {{ 'bg-background' if kind == 'human' else 'bg-primary' }}">
+        {% if kind == "human" %}
+        {{ get_icon("user", 16) }}
+        {% else %}
+        {{ get_icon("logo", 16) }}
+        {% endif %}
+    </div>
+
+    <div class="flex flex-col gap-2 w-full">
+        <div class="font-bold">
+            {%if kind == "human" %}
+            You
+            {% else %}
+            ChatGPT
+            {% endif %}
+        </div>
+
+        {% if kind == "ai-sse" %}
+        <div id="ai-sse" class="prose prose-sm w-full flex flex-col [&>*]:flex-grow">
+            {{ content }}
+        </div>
+
+        {% else %}
+        <div class="prose prose-sm w-full flex flex-col [&>*]:flex-grow">
+            {{ content }}
+        </div>
+
+    </div>
+
+
+
+    {% endif %}
+
+
+
+
+
+</div>
+
+
+
+{% endmacro %}

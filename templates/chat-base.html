@@ -1,0 +1,85 @@
+{% from "icon-macros.html" import get_icon %}
+{% import "component-macros.html" as components %}
+
+{% extends "base.html" %} {% block body %}
+
+<div class="flex w-full h-screen">
+    <div class="flex flex-col bg-foreground/[.03] w-[260px] h-[100vh] p-4 text-sm">
+
+        <a href="/chat"
+            class="flex items-center justify-between hover:bg-foreground/[.07] p-2 rounded-md cursor-pointer">
+
+            <div class="flex gap-4 items-center ">
+                <div class="bg-white rounded-full w-max p-1 border-[1px] border-foreground/20">
+                    {{ get_icon("logo", 18) }}
+                </div>
+                <span class="font-medium">New chat</span>
+            </div>
+
+            {{ get_icon("file-pen-line", 18) }}
+        </a>
+
+
+
+        <br />
+
+        <!-- <div class="text-foreground/50 p-2 text-xs font-medium">Pinned Chats</div>
+
+        <div class="flex flex-col">
+
+            <div class="flex items-center justify-between hover:bg-foreground/[.07] p-2 rounded-md cursor-pointer">
+                <a href="/dashboard/tags" class="hover:bg-gray-200 line-clamp-1">
+                    Users
+                </a>
+            </div>
+
+            <div class="flex items-center justify-between hover:bg-foreground/[.07] p-2 rounded-md cursor-pointer">
+                <a href="/dashboard/tags" class="hover:bg-gray-200 line-clamp-1">
+                    Users
+                </a>
+            </div>
+        </div> -->
+
+
+        <br />
+
+        <div class="text-foreground/50 p-2 text-xs font-medium">Chats</div>
+
+        <div class="flex flex-col h-full overflow-y-auto">
+
+
+            {% for chat in chats %}
+
+            <div class="flex items-center justify-between hover:bg-foreground/[.07] p-2 rounded-md cursor-pointer">
+                <a href="/chat/{{ chat.id }}" class="hover:bg-gray-200 line-clamp-1 w-full">
+                    {{ chat.name }}
+                </a>
+            </div>
+
+            {% endfor %}
+
+
+
+        </div>
+
+        <button hx-get="/auth/logout"
+            class="flex items-center gap-2 hover:bg-foreground/[.07] p-2 rounded-md cursor-pointer">
+            <div>
+                {{user.username}}
+            </div>
+            <div>
+                {{ get_icon("logout", 18) }}
+            </div>
+            </a>
+    </div>
+
+    <div class="relative flex-grow p-4 w-full h-full flex justify-center">
+
+        {% block chat %}
+        {% endblock %}
+
+    </div>
+
+</div>
+
+{% endblock %}

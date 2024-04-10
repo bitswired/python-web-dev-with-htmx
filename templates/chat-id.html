@@ -1,0 +1,43 @@
+{% from "icon-macros.html" import get_icon %}
+{% import "component-macros.html" as components%}
+
+{% extends "chat-base.html" %}
+
+{% block chat %}
+
+
+
+<div class="flex flex-col w-full items-center h-full overflow-y-auto font leading-relaxed text-foreground/70">
+  {% for message in chat.messages %}
+  {{ components.chat_message(message.kind, message.rendered_content|safe, user.username) }}
+  {% endfor %}
+
+
+  {% if chat.messages[-1].kind == "human" %}
+
+  {{ components.chat_message("ai-sse", "", username) }}
+
+
+  <div id="stream" hx-ext="sse" sse-connect="/chat/generate/{{ chat.id }}" sse-swap="message" hx-target="#ai-sse"
+    hx-swap="outerHTML">
+  </div>
+
+
+  {% endif %}
+
+  <div class="py-[100px]"></div>
+</div>
+
+
+<div class="absolute w-full bottom-2 inset-x-0 bg-red-10 p-1 px-16 flex justify-center">
+
+  <form class="relative w-full max-w-[700px]" hx-ext="json-enc" hx-post="/chat/{{ chat.id }}/add-message">
+    <textarea name="message" class="relative w-full rounded-md"></textarea>
+    <button class="absolute bottom-3 right-2 text-background bg-foreground rounded-md p-2">
+      {{ get_icon("arrow-up-from-line", 18) }}
+    </button>
+  </form>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% from "icon-macros.html" import get_icon %}
+
+{% extends "base.html" %} {% block body %}
+
+<div class="flex items-center justify-center pt-12">
+
+
+    <form class="flex flex-col max-w-[350px] gap-4 items-center" hx-post="/auth/signup" hx-ext="json-enc">
+        {{ get_icon("logo", 100) }}
+
+        <br />
+
+        <h1 class="text-4xl text-center">Python + HTMX ChatGPT Clone</h1>
+
+        <br />
+
+        <div class="flex flex-col gap-2 w-full">
+            <label class="text-sm text-foreground/50" for="username">Email</label>
+            <input id="username" name="username" type="email" class="w-full rounded-md" placeholder="Email">
+        </div>
+
+        <div class="flex flex-col gap-2 w-full">
+            <label class="text-sm text-foreground/50" for="password">Password</label>
+            <input id="password" name="password" type="password" class="w-full rounded-md" placeholder="Password">
+        </div>
+
+        <div class="flex flex-col gap-2 w-full">
+            <label class="text-sm text-foreground/50" for="password-confirmation">Password Confirmation</label>
+            <input id="password-confirmation" name="password-confirmation" type="password" class="w-full rounded-md"
+                placeholder="Password Confirmation">
+        </div>
+
+        <div class="w-full mt-8" hx-boost="true">
+            Already have an account? <a href="/login" class="text-primary hover:underline">Login</a>
+        </div>
+
+        <button type="submit" class="p-2 rounded-md bg-primary w-full">Signup</button>
+    </form>
+
+</div>
+
+{% endblock %}

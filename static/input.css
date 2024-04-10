@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: 158, 64.4%, 51.6%;
+    --color-background: 0, 0%, 100%;
+    --color-foreground: 0, 0%, 0%;
+    --color-background-dimmed: 0, 0%, 97.6%;
+  }
+
+  /* Customize the scrollbar */
+  ::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--color-background));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--color-primary));
+    border-radius: 20px;
+  }
+}

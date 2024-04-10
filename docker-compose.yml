@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  core:
+    build:
+      context: .
+    command: poetry run uvicorn app.app:app --host 0.0.0.0 --reload
+    entrypoint: ./entrypoint.sh
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - DB_HOST=db
