@@ -11,29 +11,22 @@ from sqlalchemy.orm import selectinload
 from app import schemas
 from app.db import AsyncSession, models
 
-# @chatprompt(
-#     SystemMessage("You are a movie buff."),
-#     UserMessage("What is your favorite quote from Harry Potter?"),
-#     AssistantMessage(
-#         Quote(
-#             quote="It does not do to dwell on dreams and forget to live.",
-#             character="Albus Dumbledore",
-#         )
-#     ),
-#     UserMessage("What is your favorite quote from {movie}?"),
-# )
-# def get_movie_quote(movie: str) -> Quote: ...
-
-
-# get_movie_quote("Iron Man")
-# # Quote(quote='I am Iron Man.', character='Tony Stark')
-
 
 @dataclass
 class AppService:
+    """
+    Service class for handling application logic.
+    """
+
     session: AsyncSession
 
     async def get(self) -> ScalarResult[models.User]:
+        """
+        Get a list of users.
+
+        Returns:
+            ScalarResult[models.User]: A scalar result of users.
+        """
         session = self.session
         async with session.begin():
             result: ScalarResult[models.User] = await self.session.scalars(
@@ -42,6 +35,15 @@ class AppService:
         return result
 
     async def create_user(self, data: schemas.Signup) -> models.User:
+        """
+        Create a new user.
+
+        Args:
+            data (schemas.Signup): The signup data.
+
+        Returns:
+            models.User: The created user.
+        """
         hashed_password = bcrypt.hashpw(data.password.encode(), bcrypt.gensalt())
 
         user = models.User(
@@ -53,6 +55,18 @@ class AppService:
         return user
 
     async def login(self, daat: schemas.Login) -> models.User:
+        """
+        Login a user.
+
+        Args:
+            daat (schemas.Login): The login data.
+
+        Returns:
+            models.User: The logged in user.
+
+        Raises:
+            HTTPException: If the user is not found or the password is invalid.
+        """
         user = await self.session.scalar(
             select(models.User).where(models.User.username == daat.username)
         )
@@ -65,7 +79,16 @@ class AppService:
 
         return user
 
-    async def get_user_by_id(self, id: int) -> models.User:
+    async def get_user_by_id(self, id: int) -> models.User | None:
+        """
+        Get a user by ID.
+
+        Args:
+            id (int): The ID of the user.
+
+        Returns:
+            models.User: The user with the specified ID.
+        """
         async with self.session.begin():
             user = await self.session.scalar(
                 select(models.User).where(models.User.id == id)
@@ -74,6 +97,16 @@ class AppService:
         return user
 
     async def get_all_chats(self, user: models.User) -> ScalarResult[models.Chat]:
+        """
+        Get all chats for a user.
+
+        Args:
+            user (models.User): The user.
+
+        Returns:
+            ScalarResult[models.Chat]: A scalar result of chats.
+
+        """
         session = self.session
         async with session.begin():
             subquery = (
@@ -104,7 +137,22 @@ class AppService:
     #         )
     #     return chats
 
-    async def get_chat_by_id(self, chat_id: int, user: models.User) -> models.Chat:
+    async def get_chat_by_id(
+        self, chat_id: int, user: models.User
+    ) -> models.Chat | None:
+        """
+        Get a chat by ID for a user.
+
+        Args:
+            chat_id (int): The ID of the chat.
+            user (models.User): The user.
+
+        Returns:
+            models.Chat: The chat with the specified ID.
+
+        Raises:
+            HTTPException: If the chat is not found.
+        """
         async with self.session.begin():
             chat = await self.session.scalar(
                 select(models.Chat)
@@ -116,6 +164,16 @@ class AppService:
     async def create_chat(
         self, user: models.User, data: schemas.CreateChat
     ) -> models.Chat:
+        """
+        Create a new chat for a user.
+
+        Args:
+            user (models.User): The user.
+            data (schemas.CreateChat): The chat data.
+
+        Returns:
+            models.Chat: The created chat.
+        """
         chat = models.Chat(name=data.message, user_id=user.id)
 
         message = models.ChatMessage(kind="human", content=data.message)
@@ -129,6 +187,20 @@ class AppService:
     async def add_message(
         self, user: models.User, data: schemas.AddMessage, chat_id: int
     ) -> models.ChatMessage:
+        """
+        Add a message to a chat.
+
+        Args:
+            user (models.User): The user.
+            data (schemas.AddMessage): The message data.
+            chat_id (int): The ID of the chat.
+
+        Returns:
+            models.ChatMessage: The added message.
+
+        Raises:
+            HTTPException: If the chat is not found.
+        """
         async with self.session.begin():
             chat = await self.session.scalar(
                 select(models.Chat).where(models.Chat.id == chat_id)
@@ -145,6 +217,18 @@ class AppService:
         return message
 
     async def generate(self, chat_id: int) -> AsyncGenerator[dict, None]:
+        """
+        Generate a response for a chat.
+
+        Args:
+            chat_id (int): The ID of the chat.
+
+        Yields:
+            dict: A dictionary containing the generated response.
+
+        Raises:
+            HTTPException: If the chat is not found.
+        """
         async with self.session.begin():
             chat = await self.session.scalar(
                 select(models.Chat)
@@ -153,6 +237,9 @@ class AppService:
                     selectinload(models.Chat.messages),
                 )
             )
+
+        if chat is None:
+            raise HTTPException(status_code=404, detail="Chat not found")
 
         messages: list[dict] = []
 

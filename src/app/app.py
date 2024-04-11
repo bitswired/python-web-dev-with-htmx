@@ -35,6 +35,9 @@ app.include_router(chat_router, prefix="/chat")
 
 @app.get("/")
 def home() -> RedirectResponse:
+    """
+    Redirects the user to the '/chat' endpoint.
+    """
     return RedirectResponse("/chat")
 
 
@@ -42,6 +45,15 @@ def home() -> RedirectResponse:
 def login(
     request: Request,
 ) -> HTMLResponse:
+    """
+    Renders the login page.
+
+    Parameters:
+        - request: The incoming request.
+
+    Returns:
+        - HTMLResponse: The rendered login page.
+    """
     res: HTMLResponse = templates.TemplateResponse(
         request=request,
         name="login.html",
@@ -54,6 +66,15 @@ def login(
 def signup(
     request: Request,
 ) -> HTMLResponse:
+    """
+    Renders the signup page.
+
+    Parameters:
+        - request: The incoming request.
+
+    Returns:
+        - HTMLResponse: The rendered signup page.
+    """
     res: HTMLResponse = templates.TemplateResponse(
         request=request,
         name="signup.html",
@@ -63,4 +84,14 @@ def signup(
 
 @app.exception_handler(401)
 async def custom_404_handler(_: Any, __: Any) -> RedirectResponse:
+    """
+    Handles the 401 exception and redirects the user to the '/login' endpoint.
+
+    Parameters:
+        - _: The exception.
+        - __: The exception details.
+
+    Returns:
+        - RedirectResponse: The redirect response to the '/login' endpoint.
+    """
     return RedirectResponse("/login")

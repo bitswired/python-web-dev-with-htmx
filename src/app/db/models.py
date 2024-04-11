@@ -16,6 +16,11 @@ from sqlalchemy.orm import (
 
 
 class Base(AsyncAttrs, DeclarativeBase):
+    """
+    Base class for all models.
+    Provides common attributes like create_date and update_date.
+    """
+
     create_date: Mapped[datetime] = mapped_column(server_default=func.now())
     update_date: Mapped[datetime] = mapped_column(
         server_default=func.now(), onupdate=func.now()
@@ -23,6 +28,10 @@ class Base(AsyncAttrs, DeclarativeBase):
 
 
 class User(Base):
+    """
+    Represents a user in the system.
+    """
+
     __tablename__ = "users"
     __table_args__ = (UniqueConstraint("username", name="uix_username"),)
 
@@ -35,6 +44,10 @@ class User(Base):
 
 
 class Chat(Base):
+    """
+    Represents a chat in the system.
+    """
+
     __tablename__ = "chats"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -50,6 +63,10 @@ class Chat(Base):
 
 
 class ChatMessage(Base):
+    """
+    Represents a message in a chat.
+    """
+
     __tablename__ = "chat_messages"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -63,5 +80,8 @@ class ChatMessage(Base):
 
     @property
     def rendered_content(self) -> str:
+        """
+        Renders the content of the message as HTML using Markdown.
+        """
         res: str = markdown(self.content, extensions=["fenced_code"])
         return res

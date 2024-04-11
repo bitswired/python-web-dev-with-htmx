@@ -31,6 +31,7 @@ pre-commit = "^3.6.0"
 commitizen = "^3.13.0"
 poethepoet = "^0.25.0"
 pytailwindcss = "^0.2.0"
+types-markdown = "^3.6.0.20240316"
 
 [tool.poe.tasks]
 pre-com-install-base = "poetry run pre-commit install"

@@ -2187,6 +2187,17 @@ slack = ["slack-sdk"]
 telegram = ["requests"]
 
 [[package]]
+name = "types-markdown"
+version = "3.6.0.20240316"
+description = "Typing stubs for Markdown"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "types-Markdown-3.6.0.20240316.tar.gz", hash = "sha256:de9fb84860b55b647b170ca576895fcca61b934a6ecdc65c31932c6795b440b8"},
+    {file = "types_Markdown-3.6.0.20240316-py3-none-any.whl", hash = "sha256:d3ecd26a940781787c7b57a0e3c9d77c150db64e12989ef687059edc83dfd78a"},
+]
+
+[[package]]
 name = "typing-extensions"
 version = "4.11.0"
 description = "Backported and Experimental Type Hints for Python 3.8+"
@@ -2677,4 +2688,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "5d5fc1e7e26a0ef5ef91e1af81eb6437d66e10fe5804f077795f9cd10bcfa5d6"
+content-hash = "dedfea88a2d8d6901d6bb2f15622db99010a171db2fce0902f24f44ea34dfbe7"
