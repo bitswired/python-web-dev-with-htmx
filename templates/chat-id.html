@@ -15,8 +15,7 @@
 
   {% if chat.messages[-1].kind == "human" %}
   {{ components.chat_message("ai-sse", "", username) }}
-  <div id="stream" hx-ext="sse" sse-connect="/chat/generate/{{ chat.id }}" sse-swap="message" hx-target="#ai-sse"
-    hx-swap="outerHTML">
+  <div {# HTMX Here #}>
   </div>
   {% endif %}
 

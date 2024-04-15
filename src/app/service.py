@@ -4,7 +4,6 @@ from typing import AsyncGenerator
 import bcrypt
 import litellm
 from fastapi import HTTPException
-from markdown import markdown
 from sqlalchemy import ScalarResult, func, select
 from sqlalchemy.orm import selectinload
 
@@ -252,14 +251,8 @@ class AppService:
         Raises:
             HTTPException: If the chat is not found.
         """
-        async with self.session.begin():
-            chat = await self.session.scalar(
-                select(models.Chat)
-                .where(models.Chat.id == chat_id)
-                .options(
-                    selectinload(models.Chat.messages),
-                )
-            )
+        # TODO: Retrieve the chat, if not found raise an HTTPException
+        chat: models.Chat = ...
 
         if chat is None:
             raise HTTPException(status_code=404, detail="Chat not found")
@@ -267,10 +260,8 @@ class AppService:
         messages: list[dict] = []
 
         for message in chat.messages:
-            if message.kind == "human":
-                messages.append({"role": "user", "content": message.content})
-            else:
-                messages.append({"role": "assistant", "content": message.content})
+            # TODO: Build the message list for the AI completion
+            ...
 
         response = await litellm.acompletion(
             model="gpt-3.5-turbo", messages=messages, stream=True
@@ -281,12 +272,9 @@ class AppService:
             content = chunk.choices[0].delta.content
             if content:
                 res += content
-                s = f"""
-                <div id="ai-sse" class="prose prose-sm w-full flex flex-col [&>*]:flex-grow">
-                    {markdown(res, extensions=["fenced_code"])}
-                </div>
-                """
-                yield {"event": "message", "id": "id", "data": s}
+                # TODO: Build the response that will be swapped in the template by HTMX
+                data = ...
+                yield {"event": "message", "id": "id", "data": data}
 
         async with self.session.begin():
             gen_message = models.ChatMessage(
@@ -294,11 +282,7 @@ class AppService:
             )
             self.session.add(gen_message)
 
-        s = f"""
-        <div class="prose prose-sm w-full flex flex-col [&>*]:flex-grow">
-            {markdown(res, extensions=["fenced_code"])}
-        </div>
-
-        <div id="stream" hx-swap-oob="true" hx-swap="outerHTML"></div>
-        """
-        yield {"event": "message", "id": "id", "data": s}
+        # TODO: Send the final response that will be swapped in the template by HTMX
+        # Combine both writing the final message and removing the sse connection with out-of-band swap
+        data = ...
+        yield {"event": "message", "id": "id", "data": data}
