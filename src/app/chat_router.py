@@ -120,8 +120,10 @@ async def delete_chat(
         app_service (AppService, optional): The application service dependency. Defaults to Depends(get_app_service).
         user (models.User, optional): The user dependency. Defaults to Depends(get_user).
     """
-    await app_service.delete_chat(chat_id, user)
-    return HTMLResponse()
+    # TODO: Use the service to delete the chat
+    await app_service. ...
+    # TODO: Return appropriate reponse to HTMX
+    return ...
 
 
 @chat_router.post(

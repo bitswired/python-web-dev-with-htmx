@@ -196,16 +196,13 @@ class AppService:
             HTTPException: If the chat is not found.
         """
         async with self.session.begin():
-            chat = await self.session.scalar(
-                select(models.Chat)
-                .where(models.Chat.id == chat_id and models.Chat.user_id == user.id)
-                .options(selectinload(models.Chat.messages))
-            )
-
+            # TODO: Get the chat from the database
+            chat = ...
             if chat is None:
                 raise HTTPException(status_code=404, detail="Chat not found")
 
-            await self.session.delete(chat)
+            # TODO: Delete the chat
+            await ...
 
     async def add_message(
         self, user: models.User, data: schemas.AddMessage, chat_id: int

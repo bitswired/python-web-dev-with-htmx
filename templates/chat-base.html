@@ -37,8 +37,7 @@
                     {{ chat.name }}
                 </a>
 
-                <button hx-delete="/chat/{{ chat.id }}" hx-target="#chat-{{ chat.id }}" hx-swap="outerHTML"
-                    class="group-hover:flex hidden right-0 inset-y-0 items-center justify-center ">
+                <button {# HTMX here #} class="group-hover:flex hidden right-0 inset-y-0 items-center justify-center ">
                     <span class=" rounded-full aspect-square w-max p-1 text-center">
                         {{ get_icon("trash", 12) }}
                     </span>
