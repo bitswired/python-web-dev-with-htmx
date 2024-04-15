@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, Request, Response
 from fastapi.responses import HTMLResponse
+from markdown import markdown
 from sse_starlette.sse import EventSourceResponse
 
 from app import schemas
@@ -100,6 +101,29 @@ async def create_chat(
     response.headers["HX-Redirect"] = f"/chat/{chat.id}"
 
 
+@chat_router.delete(
+    "/{chat_id}",
+)
+async def delete_chat(
+    chat_id: int,
+    app_service: AppService = Depends(get_app_service),
+    user: models.User = Depends(get_user),
+) -> HTMLResponse:
+    """
+    Handler for deleting a chat.
+
+    Deletes the chat with the given chat_id and redirects to the chats page.
+
+    Args:
+        chat_id (int): The ID of the chat.
+        response (Response): The response object.
+        app_service (AppService, optional): The application service dependency. Defaults to Depends(get_app_service).
+        user (models.User, optional): The user dependency. Defaults to Depends(get_user).
+    """
+    await app_service.delete_chat(chat_id, user)
+    return HTMLResponse()
+
+
 @chat_router.post(
     "/{chat_id}/add-message",
     response_class=HTMLResponse,
@@ -107,24 +131,41 @@ async def create_chat(
 async def add_message(
     chat_id: int,
     data: schemas.AddMessage,
-    response: Response,
+    request: Request,
     app_service: AppService = Depends(get_app_service),
     user: models.User = Depends(get_user),
-) -> None:
+) -> HTMLResponse:
     """
-    Handler for adding a message to a chat.
-
-    Adds a new message to the chat with the given chat_id and refreshes the page.
+    Add a new message to the chat.
 
     Args:
         chat_id (int): The ID of the chat.
-        data (schemas.AddMessage): The data for adding the message.
-        response (Response): The response object.
-        app_service (AppService, optional): The application service dependency. Defaults to Depends(get_app_service).
+        data (schemas.AddMessage): The data of the new message.
+        request (Request): The incoming request.
+        app_service (AppService, optional): The app service dependency. Defaults to Depends(get_app_service).
         user (models.User, optional): The user dependency. Defaults to Depends(get_user).
+
+    Returns:
+        HTMLResponse: The response containing the rendered template.
     """
+
     await app_service.add_message(user=user, data=data, chat_id=chat_id)
-    response.headers["HX-Refresh"] = "true"
+
+    chat = await app_service.get_chat_by_id(chat_id, user)
+
+    res: HTMLResponse = templates.TemplateResponse(
+        request=request,
+        name="chat-id-new-message.html",
+        context={
+            "user": user,
+            "message": {
+                "kind": "human",
+                "rendered_content": markdown(data.message, extensions=["fenced_code"]),
+            },
+            "chat": chat,
+        },
+    )
+    return res
 
 
 @chat_router.get(

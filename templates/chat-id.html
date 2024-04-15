@@ -14,24 +14,20 @@
 
 
   {% if chat.messages[-1].kind == "human" %}
-
   {{ components.chat_message("ai-sse", "", username) }}
-
-
   <div id="stream" hx-ext="sse" sse-connect="/chat/generate/{{ chat.id }}" sse-swap="message" hx-target="#ai-sse"
     hx-swap="outerHTML">
   </div>
-
-
   {% endif %}
 
-  <div class="py-[100px]"></div>
+  <div id="new-message" class="w-full  py-[100px]"></div>
 </div>
 
 
-<div class="absolute w-full bottom-2 inset-x-0 bg-red-10 p-1 px-16 flex justify-center">
+<div class="absolute w-full bottom-2 inset-x-0 p-1 px-16 flex justify-center">
 
-  <form class="relative w-full max-w-[700px]" hx-ext="json-enc" hx-post="/chat/{{ chat.id }}/add-message">
+  <form class="relative w-full max-w-[700px]" hx-ext="json-enc" hx-post="/chat/{{ chat.id }}/add-message"
+    hx-target="#new-message" hx-swap="outerHTML" hx-trigger="keyup[keyCode==13]">
     <textarea name="message" class="relative w-full rounded-md"></textarea>
     <button class="absolute bottom-3 right-2 text-background bg-foreground rounded-md p-2">
       {{ get_icon("arrow-up-from-line", 18) }}

@@ -184,6 +184,29 @@ class AppService:
             self.session.add(chat)
         return chat
 
+    async def delete_chat(self, chat_id: int, user: models.User) -> None:
+        """
+        Delete a chat.
+
+        Args:
+            chat_id (int): The ID of the chat.
+            user (models.User): The user.
+
+        Raises:
+            HTTPException: If the chat is not found.
+        """
+        async with self.session.begin():
+            chat = await self.session.scalar(
+                select(models.Chat)
+                .where(models.Chat.id == chat_id and models.Chat.user_id == user.id)
+                .options(selectinload(models.Chat.messages))
+            )
+
+            if chat is None:
+                raise HTTPException(status_code=404, detail="Chat not found")
+
+            await self.session.delete(chat)
+
     async def add_message(
         self, user: models.User, data: schemas.AddMessage, chat_id: int
     ) -> models.ChatMessage:

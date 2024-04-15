@@ -11,6 +11,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.auth_router import auth_router
 from app.chat_router import chat_router
+from app.example_router import example_router
 from app.utils import templates
 
 security = HTTPBearer()
@@ -31,6 +32,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.include_router(auth_router, prefix="/auth")
 app.include_router(chat_router, prefix="/chat")
+app.include_router(example_router, prefix="/example")
 
 
 @app.get("/")

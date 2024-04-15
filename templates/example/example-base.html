@@ -1,0 +1,39 @@
+{% extends "base.html" %} {% block body %}
+
+<div class="flex w-full h-screen">
+    <div class="flex flex-col bg-foreground/[.03] w-[260px] h-[100vh] p-4 text-sm">
+
+        <div hx-boost="true"
+            class="relative group flex items-center justify-between hover:bg-foreground/[.07] p-2 rounded-md cursor-pointer">
+            <a href="/" class="hover:bg-gray-200 line-clamp-1 w-full">
+                ads
+            </a>
+        </div>
+
+        <div hx-boost="true"
+            class="relative group flex items-center justify-between hover:bg-foreground/[.07] p-2 rounded-md cursor-pointer">
+            <a href="/" class="hover:bg-gray-200 line-clamp-1 w-full">
+                ads
+            </a>
+        </div>
+
+        <div hx-boost="true"
+            class="relative group flex items-center justify-between hover:bg-foreground/[.07] p-2 rounded-md cursor-pointer">
+            <a href="/" class="hover:bg-gray-200 line-clamp-1 w-full">
+                ads
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<div class="relative flex-grow p-4 w-full h-full flex justify-center">
+
+    {% block example %}
+    {% endblock %}
+
+</div>
+
+</div>
+
+{% endblock %}
