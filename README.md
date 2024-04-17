@@ -23,6 +23,8 @@ OPENAI_API_KEY=sk-...
 
 ### Exercise 1: Implement User Login
 
+Checkout branch `ex1`.
+
 In this exercise, you will complete the implementation of the user login functionality in the provided code. The login process involves retrieving the user from the database, checking the password, setting a cookie, and redirecting the user to the home page.
 
 Tasks:
@@ -46,6 +48,8 @@ Good luck!
 
 ### Exercise 2: Implement Chat Deletion
 
+Checkout branch `ex2`.
+
 In this exercise, you will complete the implementation of the chat deletion functionality in the provided code. The deletion process involves using the application service to delete the chat and returning an appropriate response to HTMX.
 
 Tasks:
@@ -65,6 +69,8 @@ Note: The necessary error handling and other code are already provided.
 Good luck!
 
 ### Exercise 3: Implement Chat Generation with Server-Sent Events (SSE)
+
+Checkout branch `ex3`.
 
 In this exercise, you will complete the implementation of the chat generation functionality using Server-Sent Events (SSE) in the provided code. The generation process involves retrieving the chat, building the message list for AI completion, and sending the generated response back to the client using SSE.
 
