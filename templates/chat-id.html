@@ -27,7 +27,7 @@
 <div class="absolute w-full bottom-2 inset-x-0 p-1 px-16 flex justify-center">
 
   <form class="relative w-full max-w-[700px]" hx-ext="json-enc" hx-post="/chat/{{ chat.id }}/add-message"
-    hx-target="#new-message" hx-swap="outerHTML" hx-trigger="keyup[keyCode==13]">
+    hx-target="#new-message" hx-swap="outerHTML" hx-trigger="keyup[event.shiftKey && event.keyCode == 13], submit">
     <textarea name="message" class="relative w-full rounded-md"></textarea>
     <button class="absolute bottom-3 right-2 text-background bg-foreground rounded-md p-2">
       {{ get_icon("arrow-up-from-line", 18) }}

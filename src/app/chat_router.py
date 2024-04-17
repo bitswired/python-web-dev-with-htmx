@@ -148,7 +148,6 @@ async def add_message(
     Returns:
         HTMLResponse: The response containing the rendered template.
     """
-
     await app_service.add_message(user=user, data=data, chat_id=chat_id)
 
     chat = await app_service.get_chat_by_id(chat_id, user)

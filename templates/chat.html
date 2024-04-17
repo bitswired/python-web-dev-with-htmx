@@ -31,7 +31,8 @@
 
 <div class="absolute w-full bottom-2 inset-x-0 p-8 flex justify-center">
 
-  <form class="relative w-full max-w-[700px]" hx-ext="json-enc" hx-post="/chat">
+  <form class="relative w-full max-w-[700px]" hx-ext="json-enc" hx-post="/chat"
+    hx-trigger="keyup[event.shiftKey && event.keyCode == 13], submit">
     <textarea name="message" class="relative w-full rounded-md"></textarea>
     <button class="absolute bottom-3 right-2 text-background bg-foreground rounded-md p-2">
       {{ get_icon("arrow-up-from-line", 18) }}
