@@ -21,9 +21,10 @@ async def login(
         data (schemas.Login): The login data provided by the user.
         app_service (AppService, optional): The AppService dependency. Defaults to Depends(get_app_service).
     """
-    user = await app_service.login(data)
-    response.set_cookie(key="python-htmx-workshop", value=str(user.id))
-    response.headers["HX-Redirect"] = "/"
+    # TODO: Implement user login
+    user = ...
+    response.set_cookie(...)
+    response.headers[...] = ...
 
 
 @auth_router.post("/signup")

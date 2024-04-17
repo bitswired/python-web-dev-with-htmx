@@ -67,13 +67,12 @@ class AppService:
         Raises:
             HTTPException: If the user is not found or the password is invalid.
         """
-        user = await self.session.scalar(
-            select(models.User).where(models.User.username == daat.username)
-        )
+        # TODO: Retrive the user
+        user = ...
 
-        if user is None:
-            raise HTTPException(status_code=404, detail="User not found")
+        # TODO: if the user is not found, raise an HTTPException with status code 404  and detail "User not found"
 
+        # Check the password
         if not bcrypt.checkpw(daat.password.encode(), user.hashed_password.encode()):
             raise HTTPException(status_code=400, detail="Invalid password")
 
