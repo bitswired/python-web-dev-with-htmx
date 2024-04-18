@@ -1,4 +1,4 @@
-# Python Web Applications with GenAI Workshop: ChatGPT Clone [SLIDES](https://www.canva.com/design/DAGCI_7ER38/qmVEdeSccBvJLqN33zbEZQ/view)
+# Python Web Applications with GenAI Workshop: ChatGPT Clone ([SLIDES](https://www.canva.com/design/DAGCI_7ER38/qmVEdeSccBvJLqN33zbEZQ/view))
 
 ## Getting started
 
